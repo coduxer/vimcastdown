@@ -22,8 +22,10 @@ else:
     results = json.load(urlopen(jsonurl))
 
 savepath = params.outputfolder
+length = len(str(len(results)))
+len_format = '0{}d'.format(length)
 for key in results:
-    filename = key + '_'
+    filename = format(int(key), len_format) + '_'
     url = results[key].get('quicktime', results[key].get('mp4', None))
     if url is None:
         raise Exception('error')
