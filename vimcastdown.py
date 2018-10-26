@@ -2,14 +2,24 @@ import wget
 import json
 import os
 import argparse
+from urllib.request import urlopen
 from urllib.parse import urlparse
 
+jsonurl = 'http://media.vimcasts.org/videos/index.json'
+
 parser = argparse.ArgumentParser()
-parser.add_argument('-o', '--outputfolder', default='.', help='')
-parser.add_argument('-i', '--inputjson', default='./index.json', help='')
+parser.add_argument('-o', '--outputfolder', default='.',
+                    help='Set output foldet to which all the files\
+                    will be saved')
+parser.add_argument('-i', '--inputjson', default=None,
+                    help='Manual set input.json file. \
+                    By default the file is taken from: ' + jsonurl)
 params = parser.parse_args()
-with open(params.inputjson, 'r') as f:
-    results = json.load(f)
+if params.inputjson:
+    with open(params.inputjson, 'r') as f:
+        results = json.load(f)
+else:
+    results = json.load(urlopen(jsonurl))
 
 savepath = params.outputfolder
 for key in results:
