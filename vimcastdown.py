@@ -32,7 +32,7 @@ for key in results:
     urlpath = urlparse(url)
     filename += os.path.basename(urlpath.path)
     fullpath = savepath + filename
-    if not os.path.exists(fullpath):
+    if os.path.exists(fullpath):
         print('file: {} is already exist'.format(filename))
         continue
 
