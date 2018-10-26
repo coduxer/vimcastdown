@@ -2,6 +2,7 @@ import wget
 import json
 import os
 import argparse
+import pathlib
 from urllib.request import urlopen
 from urllib.parse import urlparse
 
@@ -21,7 +22,7 @@ if params.inputjson:
 else:
     results = json.load(urlopen(jsonurl))
 
-savepath = params.outputfolder
+savepath = pathlib.Path(params.outputfolder)
 length = len(str(len(results)))
 len_format = '0{}d'.format(length)
 for key in results:
@@ -33,12 +34,12 @@ for key in results:
     url = url['url']
     urlpath = urlparse(url)
     filename += os.path.basename(urlpath.path)
-    fullpath = savepath + filename
+    fullpath = savepath / filename
     if os.path.exists(fullpath):
         print('file: {} is already exist'.format(filename))
         continue
 
     print('url = {}'.format(url))
     print('filename = {}'.format(filename))
-    wget.download(url, fullpath)
+    wget.download(url, str(fullpath))
     print('')
